@@ -27,7 +27,9 @@ signupBtn.onclick = () => {
 
 
 
-
+/*function isEmpty(str){
+	return str == "" || str == null || typeof str == "undefined";
+}*/
 
 
 function isEmpty(str){
