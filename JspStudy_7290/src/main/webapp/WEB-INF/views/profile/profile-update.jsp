@@ -4,8 +4,6 @@
     
 <%
 	User principalUser = (User)session.getAttribute("principal");
-	
-
 %>
 
 

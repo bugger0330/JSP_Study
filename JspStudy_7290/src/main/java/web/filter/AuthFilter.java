@@ -4,6 +4,7 @@ import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -12,39 +13,47 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import repository.AuthDao;
 import repository.user.User;
+import web.service.AuthService;
+import web.service.AuthServiceImpl;
 
-
+/**
+ * Servlet Filter implementation class AuthFilter
+ */
 @WebFilter({ "/profile/*", "/board/*" })
 public class AuthFilter implements Filter {
 	
+	private AuthService authService;
+	
 	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
+		System.out.println("update-principal init");
+		ServletContext servletContext = fConfig.getServletContext();
+		authService = new AuthServiceImpl((AuthDao)servletContext.getAttribute("authDao"));
 	}
-
-
-
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
-		
-		
-		HttpServletRequest hRequest = (HttpServletRequest)request;
-		HttpServletResponse hResponse = (HttpServletResponse)response;
-		HttpSession session = hRequest.getSession();
-		User principalUser = (User)session.getAttribute("principal");
-		
-		
-		if(principalUser == null) {//로그인이 안되서 세션 객체가 없을때
-			hResponse.sendRedirect("/JspStudy_7290/auth/signin");
-			return;
-		}
-		
-		chain.doFilter(request, response);
-	}
-
+	
 	public void destroy() {
 		// TODO Auto-generated method stub
 	}
+
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		HttpServletRequest hRequest = (HttpServletRequest)request;
+		HttpServletResponse hResponse = (HttpServletResponse)response;
+		
+		HttpSession session = hRequest.getSession();
+		
+		User principalUser = (User)session.getAttribute("principal");
+	
+		if(principalUser == null) {
+			hResponse.sendRedirect("/JspStudy_7290/auth/signin");
+			return;
+		}else {
+			session.setAttribute("principal", authService.getUser(principalUser.getUsername()));
+		}
+		chain.doFilter(request, response);
+		
+	}
+
+	
 
 }
