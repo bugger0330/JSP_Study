@@ -14,6 +14,8 @@ import javax.servlet.annotation.WebFilter;
 import db.DBConnectionMgr;
 import repository.AuthDao;
 import repository.AuthDaoImpl;
+import repository.FileDao;
+import repository.FileDaoImpl;
 import repository.UserDao;
 import repository.UserDaoImpl;
 
@@ -24,14 +26,17 @@ public class InitFilter implements Filter {
 	private DBConnectionMgr pool;
 	private AuthDao authDao;
 	private UserDao userDao;
+	private FileDao fileDao;
 
 	public void init(FilterConfig fConfig) throws ServletException {
 		pool = DBConnectionMgr.getInstance();
 		authDao = new AuthDaoImpl(pool);
 		userDao = new UserDaoImpl(pool);
+		fileDao = new FileDaoImpl(pool);
 		ServletContext servletContext = fConfig.getServletContext();
 		servletContext.setAttribute("authDao", authDao);
 		servletContext.setAttribute("userDao", userDao);
+		servletContext.setAttribute("fileDao", fileDao);
 	}
 
 

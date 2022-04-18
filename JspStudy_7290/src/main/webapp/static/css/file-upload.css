@@ -1,0 +1,56 @@
+.mypage-items{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	
+	border: 1px solid gray;
+	
+	width: 100%;
+	height: 100%;
+}
+
+table{
+	border: 1px solid gray;
+	margin-bottom: 20px;
+}
+
+td{
+	border: 1px solid gray;
+
+	height: 30px;
+	padding: 10px;
+}
+
+
+.preview-img {
+	height: 100%;
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+	overflow: hidden;
+}
+
+.preview-img img {
+	width: 50%;
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
