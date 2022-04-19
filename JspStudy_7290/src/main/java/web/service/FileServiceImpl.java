@@ -3,6 +3,8 @@ package web.service;
 import java.util.ArrayList;
 
 import repository.FileDao;
+import repository.file.FileEntity;
+import web.dto.FileResponseDto;
 
 public class FileServiceImpl implements FileService {
 	
@@ -16,6 +18,16 @@ public class FileServiceImpl implements FileService {
 	public boolean uploadFile(ArrayList<String> fileList) {
 		
 		return fileDao.uploadFile(fileList) > 0;
+	}
+
+	@Override
+	public ArrayList<FileResponseDto> getImgList() {
+		ArrayList<FileEntity> imgList = fileDao.getImgListAll();
+		ArrayList<FileResponseDto> fileResponseDtos = new ArrayList<FileResponseDto>();
+		for(FileEntity entity : imgList) {
+			fileResponseDtos.add(entity.toDto());
+		}
+		return fileResponseDtos;
 	}
 
 }
